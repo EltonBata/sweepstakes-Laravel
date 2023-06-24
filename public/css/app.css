@@ -1,0 +1,43 @@
+body{
+    background-image: linear-gradient(to right bottom, white, whitesmoke);
+}
+
+.sidebar{
+    height: 100vh !important;
+}
+
+.navbar-brand {
+    position: absolute;
+
+    top: 10px;
+}
+
+.nb1 {
+    position: absolute;
+
+    top: 60px;
+}
+
+.nb2 {
+    position: absolute;
+
+    top: 80vh;
+}
+
+.navbar{
+    background-image: linear-gradient(
+        to bottom,
+        #dc3545,
+        #994f56
+    ) !important;
+}
+
+
+
+.btn-p{
+    background-color: #2d5b9f !important;
+}
+
+p, th, td, span, b, label {
+    font-size: 15px !important;
+}

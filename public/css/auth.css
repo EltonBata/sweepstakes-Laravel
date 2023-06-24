@@ -1,0 +1,29 @@
+.main {
+    height: 100vh !important;
+
+    background-image: linear-gradient(
+        to bottom right,
+        #dc3545,
+        whitesmoke
+    ) !important;
+}
+
+.main2{
+    max-width: 500px !important;
+}
+
+.login {
+    background-color: inherit !important;
+}
+
+.form-control {
+    height: 50px !important;
+    background-color: inherit !important;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+
+    border-color: #dc3545 !important;
+}
+
