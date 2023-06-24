@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SweepstakesStoreRequest;
 use App\Models\Sweepstake;
-use Illuminate\Http\Request;
+
 
 class SweepstakeController extends Controller
 {
@@ -31,7 +31,7 @@ class SweepstakeController extends Controller
     {
         Sweepstake::create($request->all());
 
-        return redirect()->route("home")->with('status', 'Sorteio Registado');
+        return redirect('home')->with('status', 'Sorteio Registado');
     }
 
     /**
@@ -61,7 +61,7 @@ class SweepstakeController extends Controller
         
         $sweepstake->update($request->all());
 
-        return redirect()->route("home")->with('staus', 'Sorteion Actualizado');
+        return redirect()->route("home")->with('status', 'Sorteio Actualizado');
     }
 
     /**
