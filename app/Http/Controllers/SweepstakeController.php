@@ -31,7 +31,7 @@ class SweepstakeController extends Controller
     {
         Sweepstake::create($request->all());
 
-        return redirect()->route("home");
+        return redirect()->route("home")->with('status', 'Sorteio Registado');
     }
 
     /**
@@ -61,7 +61,7 @@ class SweepstakeController extends Controller
         
         $sweepstake->update($request->all());
 
-        return redirect()->route("home")->with("");
+        return redirect()->route("home")->with('staus', 'Sorteion Actualizado');
     }
 
     /**
