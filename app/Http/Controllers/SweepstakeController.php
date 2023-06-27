@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ParticipantStoreRequest;
 use App\Http\Requests\SweepstakesStoreRequest;
 use App\Models\Participant;
 use App\Models\Sweepstake;
@@ -81,8 +82,10 @@ class SweepstakeController extends Controller
         return redirect()->route("home")->with('status', 'Sorteio Apagado');
     }
 
-    public function draw(Sweepstake $sweepstake)
+    public function draw($id)
     {
+
+        $sweepstake = Sweepstake::where('id', $id)->first();
 
         if ($sweepstake->user_id === Auth::user()->id) {
 
@@ -90,7 +93,7 @@ class SweepstakeController extends Controller
 
                 $winners = $sweepstake->participants()->inRandomOrder()->limit($sweepstake->number_winners)->get();
 
-                dd($winners->toArray());
+
                 // $winners->each(function ($winners) {
                 //     $winners->update(['awarded_at' => now()]);
                 // });
@@ -100,6 +103,8 @@ class SweepstakeController extends Controller
             }
 
             // return response()->view('sweepstakes.show');
+
+            dd($winners->toArray());
         }
 
         return response("", "403");
@@ -119,7 +124,12 @@ class SweepstakeController extends Controller
         return response()->view('participant.create', ['sweepstake' => $sweepstake]);
     }
 
-    public function storeParticipant(Participant $participant){
-        
+    public function storeParticipant(ParticipantStoreRequest $participant)
+    {
+
+        Participant::create($participant->all());
+
+        return redirect()->route('sweepstakes.show', $participant->sweepstake_id)->with('status', 'Participant added');
+
     }
 }

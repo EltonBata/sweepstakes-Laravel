@@ -57,6 +57,11 @@
                 Participante</a>
 
         </div>
+
+        @if (session('status'))
+            {{ session('status') }}
+        @endif
+
         <table class="table table-striped shadow-sm">
             <thead>
                 <tr>
