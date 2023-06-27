@@ -43,14 +43,20 @@
 
         <div class="ms-5 d-flex align-items-center w-25 justify-content-center">
 
-        <a href="{{ route('sweepstakes.draw', $sweepstake->id) }}" class="btn shadow-sm btn-danger text-white float-end me-3">Sorteiar</a>
+            <a href="{{ route('sweepstakes.draw', $sweepstake->id) }}"
+                class="btn shadow-sm btn-danger text-white float-end me-3">Sorteiar</a>
 
         </div>
 
     </div>
 
     <div class="mt-5 container">
-        <p class="ms-3 p-0">Participantes</p>
+        <div class="d-flex align-items-center">
+            <p class="ms-3 p-0 me-5">Participantes</p>
+            <a href="{{ route('participant.create', $sweepstake->id) }}" class="btn text-white btn-sm btn-p">Adicionar
+                Participante</a>
+
+        </div>
         <table class="table table-striped shadow-sm">
             <thead>
                 <tr>

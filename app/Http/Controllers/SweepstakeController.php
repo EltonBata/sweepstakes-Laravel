@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SweepstakesStoreRequest;
+use App\Models\Participant;
 use App\Models\Sweepstake;
 use Illuminate\Support\Facades\Auth;
 
@@ -98,7 +99,7 @@ class SweepstakeController extends Controller
                 $winners = $sweepstake->participants()->whereNotNull('awarded_at')->get();
             }
 
-           // return response()->view('sweepstakes.show');
+            // return response()->view('sweepstakes.show');
         }
 
         return response("", "403");
@@ -110,7 +111,15 @@ class SweepstakeController extends Controller
         return $sweepstake->participants->whereNotNull('awarded_at')->count();
     }
 
-    public function createParticipant(){
-        return response()->view('participant.create');
+    public function createParticipant($id)
+    {
+
+        $sweepstake = Sweepstake::where('id', $id)->first();
+
+        return response()->view('participant.create', ['sweepstake' => $sweepstake]);
+    }
+
+    public function storeParticipant(Participant $participant){
+        
     }
 }
