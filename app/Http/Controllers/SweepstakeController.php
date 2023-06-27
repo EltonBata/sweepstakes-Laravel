@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SweepstakesStoreRequest;
 use App\Models\Sweepstake;
+use Illuminate\Support\Facades\Auth;
 
 
 class SweepstakeController extends Controller
@@ -21,7 +22,7 @@ class SweepstakeController extends Controller
      */
     public function create()
     {
-        return view("sweepstakes.create");
+        return response()->view("sweepstakes.create");
     }
 
     /**
@@ -37,9 +38,11 @@ class SweepstakeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sweepstake $sweepstake)
+    public function show($id)
     {
-        //
+        $sweepstake = Sweepstake::where("id", $id)->first();
+
+        return response()->view("sweepstakes.show", ['sweepstake' => $sweepstake]);
     }
 
     /**
@@ -58,7 +61,7 @@ class SweepstakeController extends Controller
     public function update(SweepstakesStoreRequest $request, $id)
     {
         $sweepstake = Sweepstake::where('id', $id)->first();
-        
+
         $sweepstake->update($request->all());
 
         return redirect()->route("home")->with('status', 'Sorteio Actualizado');
@@ -67,8 +70,47 @@ class SweepstakeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sweepstake $sweepstake)
+    public function destroy($id)
     {
-        //
+        $sweepstake = Sweepstake::where("id", $id)->first();
+
+        $sweepstake->delete();
+
+
+        return redirect()->route("home")->with('status', 'Sorteio Apagado');
+    }
+
+    public function draw(Sweepstake $sweepstake)
+    {
+
+        if ($sweepstake->user_id === Auth::user()->id) {
+
+            if ($this->winnersCount($sweepstake) < $sweepstake->number_winners) {
+
+                $winners = $sweepstake->participants()->inRandomOrder()->limit($sweepstake->number_winners)->get();
+
+                dd($winners->toArray());
+                // $winners->each(function ($winners) {
+                //     $winners->update(['awarded_at' => now()]);
+                // });
+
+            } else {
+                $winners = $sweepstake->participants()->whereNotNull('awarded_at')->get();
+            }
+
+           // return response()->view('sweepstakes.show');
+        }
+
+        return response("", "403");
+
+    }
+
+    public function winnersCount(Sweepstake $sweepstake)
+    {
+        return $sweepstake->participants->whereNotNull('awarded_at')->count();
+    }
+
+    public function createParticipant(){
+        return response()->view('participant.create');
     }
 }

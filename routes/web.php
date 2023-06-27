@@ -20,3 +20,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::resource("/user", UserController::class)->names('user');
 Route::resource("/sweepstakes", SweepstakeController::class)->names('sweepstakes');
+
+Route::get('/participant', [SweepstakeController::class, 'createParticipant'])->name('participant.create');
+Route::post('/participant', [SweepstakeController::class, 'storeParticipant'])->name('participant.store');
+
+Route::get("/sweepstakes/draw/{sweepstake}", [SweepstakeController::class, 'draw'])->name('sweepstakes.draw');
