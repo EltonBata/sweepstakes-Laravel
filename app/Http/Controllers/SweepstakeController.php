@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ParticipantStoreRequest;
 use App\Http\Requests\SweepstakesStoreRequest;
+use App\Mail\WinnerEmail;
 use App\Models\Participant;
 use App\Models\Sweepstake;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+
 
 
 class SweepstakeController extends Controller
@@ -91,20 +94,29 @@ class SweepstakeController extends Controller
 
             if ($this->winnersCount($sweepstake) < $sweepstake->number_winners) {
 
-                $winners = $sweepstake->participants()->inRandomOrder()->limit($sweepstake->number_winners)->get();
+                $limit = $sweepstake->number_winners - $this->winnersCount($sweepstake);
+
+                $winners = $sweepstake->participants()->inRandomOrder()->limit($limit)->whereNull('awarded_at')->get();
 
 
-                // $winners->each(function ($winners) {
-                //     $winners->update(['awarded_at' => now()]);
-                // });
+                $winners->each(function ($winners) use ($sweepstake) {
+                    $winners->update(['awarded_at' => now()]);
+
+                    Mail::to($winners->email)->queue(new WinnerEmail($sweepstake));
+                });
 
             } else {
                 $winners = $sweepstake->participants()->whereNotNull('awarded_at')->get();
             }
 
-            // return response()->view('sweepstakes.show');
+            return response()->view(
+                'sweepstakes.winners',
+                [
+                    'sweepstake' => $sweepstake,
+                    'winners' => $winners
+                ]
+            );
 
-            dd($winners->toArray());
         }
 
         return response("", "403");

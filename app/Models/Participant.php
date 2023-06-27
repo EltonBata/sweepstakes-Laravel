@@ -16,6 +16,10 @@ class Participant extends Model
         'awarded_at'
     ];
 
+    protected $casts = [
+        'awarded_at' => 'datetime',
+    ];
+
     public function sweepstake(){
         //cada participante pode estar incluso a um sorteios
         return $this->belongsTo(Sweepstake::class);

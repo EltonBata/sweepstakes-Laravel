@@ -18,6 +18,10 @@ class Sweepstake extends Model
         'description'
     ];
 
+    protected $casts = [
+        'end_date' => 'datetime',
+    ];
+
     //define a chave como uma string
     protected $keyType = 'string';
 

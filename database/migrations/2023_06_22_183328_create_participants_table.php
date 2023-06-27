@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignUuid("sweepstake_id")->constrained();
             $table->string("name");
             $table->string("email");
-            $table->dateTime("awarded_at");
+            $table->dateTime("awarded_at")->nullable();
             $table->timestamps();
         });
     }
